@@ -9,7 +9,9 @@ import Banner2 from "./components/Banner/Banner2";
 import Footer from "./components/Footer/Footer";
 import Auth from "./components/Auth/Auth";
 import Contact from "./components/Contact/Contact";
-import Dashboard from "../src/pages/Dashboard"; // ✅ Import your Dashboard component
+import Dashboard from "../src/pages/Dashboard"; 
+// import Dashboard from "./components/Dashboard/Dashboard";  // ← import Dashboard
+
 
 const App = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -53,7 +55,7 @@ const App = () => {
           }
         />
 
-        {/* 📞 Contact Page */}
+        <Route path="/dashboard" element={<Dashboard />} />  {/* ← new route */}
         <Route path="/contact" element={<Contact />} />
 
         {/* 🚫 Catch-all route to redirect unknown paths */}

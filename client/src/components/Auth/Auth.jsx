@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Import navigate
+import { useNavigate } from 'react-router-dom';
 import * as Components from './AuthStyles';
 import { signUpUser, loginUser } from '../../services/api';
 
 function Auth() {
   const [signIn, toggle] = useState(true);
-  const navigate = useNavigate(); // ✅ Initialize navigate
+  const navigate = useNavigate();
 
   // Sign Up States
   const [signUpName, setSignUpName] = useState('');
@@ -76,6 +76,20 @@ function Auth() {
       return;
     }
 
+    // 🔐 TEMPORARY: Hardcoded user credentials
+    const hardcodedUser = {
+      email: 'testuser@gmail.com',
+      password: 'test1234',
+    };
+
+    if (signInEmail === hardcodedUser.email && signInPassword === hardcodedUser.password) {
+      console.log('Logged in as hardcoded user');
+      localStorage.setItem('token', 'fakeToken123');
+      navigate('/dashboard');
+      return;
+    }
+
+    // 🧪 Try real backend login (use once DB is ready)
     try {
       const response = await loginUser({
         email: signInEmail,
@@ -84,8 +98,7 @@ function Auth() {
 
       console.log('Logged in:', response);
       localStorage.setItem('token', response.token);
-
-      navigate('/dashboard'); // ✅ Redirect to dashboard
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
       setLoginError(error.message || 'Invalid email or password.');

@@ -1,51 +1,61 @@
-// services/api.js
-const API_BASE_URL = 'http://127.0.0.1:3000/api/v1';
+// src/services/api.js
 
-// Sign Up User
+const BASE_URL = 'http://127.0.0.1:3000/api/v1';
+
+const hardcodedUser = {
+  email: 'testuser@gmail.com',
+  password: 'test1234',
+  token: 'fakeToken123',
+};
+
 export const signUpUser = async (userData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetch(`${BASE_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ user: userData }), // user is wrapped correctly here
+      body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.errors?.join(', ') || 'Signup failed');
+      const error = await response.json();
+      throw new Error(error.message || 'Signup failed.');
     }
 
-    return data;  // Successfully created user
+    return await response.json();
   } catch (error) {
     console.error('Error during signup:', error);
-    throw error;  // Propagate error
+    throw error;
   }
 };
 
-// Login User
-export const loginUser = async (credentials) => {
+export const loginUser = async (userData) => {
+  // ✅ Fallback to hardcoded user if matched
+  if (
+    userData.email === hardcodedUser.email &&
+    userData.password === hardcodedUser.password
+  ) {
+    return { token: hardcodedUser.token };
+  }
+
   try {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(credentials),  // Directly pass email and password
+      body: JSON.stringify(userData),
     });
 
-    const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.error || 'Login failed');
+      const error = await response.json();
+      throw new Error(error.message || 'Login failed.');
     }
 
-    // Assuming JWT token is returned in response
-    localStorage.setItem('token', data.token);  // Store token if login is successful
-
-    return data;  // Return the response data (including user info and token)
+    return await response.json();
   } catch (error) {
     console.error('Error during login:', error);
-    throw error;  // Propagate the error
+    throw error;
   }
 };
