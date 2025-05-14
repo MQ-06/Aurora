@@ -55,8 +55,7 @@ Runs at: http://localhost:3000
 
 ## 🌿 Git Branches
 
-- **main** — 🔒 Stable branch (protected)
-- **development** — 💻 Active development and testing
+- **development** — 💻 Active development,testing and readme
 - **first-half** — 📦 Finalized version for first project submission
 
 
