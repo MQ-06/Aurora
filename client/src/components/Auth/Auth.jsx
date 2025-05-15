@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Components from './AuthStyles';
 import { signUpUser, loginUser } from '../../services/api';
+import { useUser } from '../../context/UserContext';
 
-function Auth() {
-  const [signIn, toggle] = useState(true);
+function Auth({ isSignIn, setIsSignIn }) {
+  const [signIn, toggle] = useState(isSignIn);
   const navigate = useNavigate();
+  const { login } = useUser();
 
   // Sign Up States
   const [signUpName, setSignUpName] = useState('');
@@ -31,7 +33,7 @@ function Auth() {
         setLoginError('');
         setSignupError('');
         setSignupSuccess('');
-      }, 2000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [emailError, loginError, signupError, signupSuccess]);
@@ -60,7 +62,7 @@ function Auth() {
       console.log('User signed up:', response);
       toggle(true);
     } catch (error) {
-      setSignupError(error.response?.data?.message || 'Signup failed.');
+      setSignupError(error.message || 'Signup failed.');
       console.error('Signup error:', error);
     }
   };
@@ -82,8 +84,8 @@ function Auth() {
     };
 
     if (signInEmail === hardcodedUser.email && signInPassword === hardcodedUser.password) {
-      console.log('Logged in as hardcoded user');
       localStorage.setItem('token', 'fakeToken123');
+      login({ name: 'Test User', email: 'testuser@gmail.com' });
       navigate('/dashboard');
       return;
     }
@@ -94,8 +96,8 @@ function Auth() {
         password: signInPassword,
       });
 
-      console.log('Logged in:', response);
       localStorage.setItem('token', response.token);
+      login(response.user);
       navigate('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
@@ -131,6 +133,7 @@ function Auth() {
       )}
 
       <Components.Container>
+        {/* Sign Up Panel */}
         <Components.SignUpContainer signinIn={signIn}>
           <Components.Form onSubmit={handleSignUp}>
             <Components.Title className="font-serifDisplay">Create Account</Components.Title>
@@ -141,6 +144,7 @@ function Auth() {
               value={signUpName}
               onChange={(e) => setSignUpName(e.target.value)}
               autoComplete="name"
+              required
             />
             <Components.Input
               type="email"
@@ -149,6 +153,7 @@ function Auth() {
               value={signUpEmail}
               onChange={(e) => setSignUpEmail(e.target.value)}
               autoComplete="email"
+              required
             />
             <Components.Input
               type="password"
@@ -157,14 +162,16 @@ function Auth() {
               value={signUpPassword}
               onChange={(e) => setSignUpPassword(e.target.value)}
               autoComplete="new-password"
+              required
             />
             <Components.Button type="submit">Sign Up</Components.Button>
           </Components.Form>
         </Components.SignUpContainer>
 
+        {/* Sign In Panel */}
         <Components.SignInContainer signinIn={signIn}>
           <Components.Form onSubmit={handleSignIn}>
-            <Components.Title className="font-serifDisplay">Sign in</Components.Title>
+            <Components.Title className="font-serifDisplay">Sign In</Components.Title>
             <Components.Input
               type="email"
               placeholder="Email"
@@ -172,6 +179,7 @@ function Auth() {
               value={signInEmail}
               onChange={(e) => setSignInEmail(e.target.value)}
               autoComplete="email"
+              required
             />
             <Components.Input
               type="password"
@@ -180,12 +188,14 @@ function Auth() {
               value={signInPassword}
               onChange={(e) => setSignInPassword(e.target.value)}
               autoComplete="current-password"
+              required
             />
             <Components.Anchor href="#" className="font-lato">Forgot your password?</Components.Anchor>
             <Components.Button type="submit" className="font-lato">Sign In</Components.Button>
           </Components.Form>
         </Components.SignInContainer>
 
+        {/* Overlay Panels */}
         <Components.OverlayContainer signinIn={signIn}>
           <Components.Overlay signinIn={signIn}>
             <Components.LeftOverlayPanel signinIn={signIn}>

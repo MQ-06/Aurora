@@ -9,62 +9,63 @@ import Banner2 from "./components/Banner/Banner2";
 import Footer from "./components/Footer/Footer";
 import Auth from "./components/Auth/Auth";
 import Contact from "./components/Contact/Contact";
-import Dashboard from "../src/pages/Dashboard"; 
+import Dashboard from "./pages/Dashboard";
 import UserProfile from "./pages/UserProfile";
-// import Dashboard from "./components/Dashboard/Dashboard";  // ← import Dashboard
 
+import { UserProvider, useUser } from "./context/UserContext";
 
-const App = () => {
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/login" />;
+};
+
+const AppRoutes = () => {
   const [isSignIn, setIsSignIn] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
-  }, [location.pathname]); // update auth state when route changes
 
   return (
-    <main className="overflow-x-hidden bg-white text-dark scroll-smooth">
-      <Routes>
-        {/* 🔐 Login & Signup */}
-        <Route path="/login" element={<Auth isSignIn={true} setIsSignIn={setIsSignIn} />} />
-        <Route path="/signup" element={<Auth isSignIn={false} setIsSignIn={setIsSignIn} />} />
+    <Routes>
+      <Route path="/login" element={<Auth isSignIn={true} setIsSignIn={setIsSignIn} />} />
+      <Route path="/signup" element={<Auth isSignIn={false} setIsSignIn={setIsSignIn} />} />
 
-        {/* ✅ Protected Dashboard Route */}
-        <Route
-          path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
-        />
-        <Route path="/profile" element={<UserProfile />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/" element={
+        <>
+          <section id="home"><Hero /></section>
+          <section id="services"><Services /></section>
+          <Banner />
+          <Subscribe />
+          <Banner2 />
+          <Footer />
+        </>
+      } />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
+  );
+};
 
-
-        {/* 🏠 Home (Landing Page) */}
-        <Route
-          path="/"
-          element={
-            <>
-              <section id="home">
-                <Hero />
-              </section>
-              <section id="services">
-                <Services />
-              </section>
-              <Banner />
-              <Subscribe />
-              <Banner2 />
-              <Footer />
-            </>
-          }
-        />
-
-        <Route path="/dashboard" element={<Dashboard />} />  {/* ← new route */}
-        <Route path="/contact" element={<Contact />} />
-
-        {/* 🚫 Catch-all route to redirect unknown paths */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </main>
+const App = () => {
+  return (
+    <UserProvider>
+      <main className="overflow-x-hidden bg-white text-dark scroll-smooth">
+        <AppRoutes />
+      </main>
+    </UserProvider>
   );
 };
 
