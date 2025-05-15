@@ -15,7 +15,7 @@ export const signUpUser = async (userData) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(userData),
+      body: JSON.stringify({ user: userData }),  // 👈 FIXED HERE
     });
 
     if (!response.ok) {
@@ -29,6 +29,7 @@ export const signUpUser = async (userData) => {
     throw error;
   }
 };
+
 
 export const loginUser = async (userData) => {
   // ✅ Fallback to hardcoded user if matched
