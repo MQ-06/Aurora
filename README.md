@@ -58,6 +58,24 @@ Runs at: http://localhost:3000
 - **development** — 💻 Active development,testing and readme
 - **first-half** — 📦 Finalized version for first project submission
 
+## ⚙️ Project Progress Overview (70%)
+The following core features and infrastructure have been successfully implemented:
+
+✅ 70% Completion of React Frontend
+
+✅ API Integration — Seamless communication between React frontend and Rails backend
+
+✅ User Authentication — Login and signup functionalities
+
+✅ Dashboard — Personalized view for logged-in users
+
+✅ Contact Us Page — With backend connectivity
+
+✅ User Session Management — Secure session tracking and persistence
+
+✅ Profile Section — View and edit details for authenticated users
+
+✅ Database Setup — Fully structured PostgreSQL database containing comprehensive datasets related to various learning disabilities, enabling dynamic and responsive frontend behavior.
 
  ## 🤝 Contributors
 
