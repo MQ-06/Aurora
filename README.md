@@ -2,6 +2,8 @@
 
 Aurora is an inclusive, web-based educational platform designed to support students with diverse learning needs such as Dyslexia, ADHD, Visual & Hearing Impairments, and Autism Spectrum conditions. It personalizes learning through accessible content, adaptive quizzes, and community engagement.
 
+![Project Views](https://komarev.com/ghpvc/?username=yourusername&repo=aurora-edu-platform&label=Total+Project+Views&color=blueviolet&style=flat-square)
+
 ---
 
 ## 🚀 Features
@@ -58,34 +60,6 @@ Runs at: http://localhost:3000
 - **development** — 💻 Active development,testing and readme
 - **first-half** — 📦 Finalized version for first project submission
 - **final-branch**- 🚀 Final project branch containing all completed features for submission
-
-## ⚙️ Project Progress Overview (70%)
-The following core features and infrastructure have been successfully implemented:
-
-✅ 70% Completion of React Frontend
-
-✅ API Integration — Seamless communication between React frontend and Rails backend
-
-✅ User Authentication — Login and signup functionalities
-
-✅ Dashboard — Personalized view for logged-in users
-
-✅ Contact Us Page — With backend connectivity
-
-✅ User Session Management — Secure session tracking and persistence
-
-✅ Profile Section — View and edit details for authenticated users
-
-✅ Database Setup — Fully structured PostgreSQL database containing comprehensive datasets related to various learning disabilities, enabling dynamic and responsive frontend behavior.
-
-## ⚙️ Project Progress Overview (30%)
-The following core features and infrastructure have been successfully implemented:
-
-✅ Quizzes aligned with lesson content
-
-✅ User progress tracking
-
-✅ Lesson views for 4 disability types
 
 
  ## 🤝 Contributors
